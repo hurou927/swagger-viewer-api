@@ -1,0 +1,17 @@
+{
+  "devDependencies": {
+    "aws-sdk": "^2.373.0",
+    "jest": "^23.6.0",
+    "js-yaml": "^3.12.0",
+    "uuid-by-string": "^2.0.1"
+  },
+  "dependencies": {
+    "jsonschema": "^1.2.4",
+    "log4js": "^3.0.6",
+    "path": "^0.12.7",
+    "uuid": "^3.3.2"
+  },
+  "scripts": {
+    "test": "npx jest --verbose --coverage"
+  }
+}
