@@ -93,6 +93,7 @@ const putSchema = {
 };
 
 module.exports.put = async (event, context) => {
+    //TODO: duplicate username check
     try {
         if (!('id' in event.pathParameters) || !('name' in event.pathParameters)) {
             return lambdaHelper.response.error('pathParameter Error');
@@ -127,7 +128,19 @@ module.exports.put = async (event, context) => {
 
 module.exports.delete = async (event, context) => {
     try {
-        console.log(event);
+        if (!('id' in event.pathParameters)) {
+            return lambdaHelper.response.error('pathParameter Error');
+        }
+        const id = event.pathParameters.id;
+
+        const params = {
+            TableName: process.env.SERVICETABLENAME,
+            Key: { id }
+        }
+
+        const result = await dynamodb.delete(params).promise();
+        logger.debug(result);
+        return lambdaHelper.response.success({message: 'If Item does not exist, this api returns successCode'});
     } catch (error) {
         return lambdaHelper.response.error(JSON.stringify(error));
     }

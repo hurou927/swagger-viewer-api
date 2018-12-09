@@ -74,7 +74,18 @@ functions:
                 id: true
                 name: true
 
-
+  deleteService:
+    name: ${self:service}-${self:provider.stage}-lambda-deleteServiceInfo
+    handler: src/serviceCRUD.delete
+    events:
+      - http:
+          path: services/{id}
+          method: delete
+          cors: true
+          request:
+            parameters:
+              paths:
+                id: true
 
 resources:
   Resources:

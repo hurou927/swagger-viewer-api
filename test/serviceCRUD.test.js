@@ -32,18 +32,23 @@ describe('CRUD', () => {
     //     expect(response.statusCode).toBe(400);
     // })
 
-    it('put', async () => {
-        const response = await handler.put(handlerHelper.createEvent({}, { id: 'd9e809d7-4e52-4117-8b98-14e207e8aef1', name: 'testtest1' }, null), {});
+    // it('put', async () => {
+    //     const response = await handler.put(handlerHelper.createEvent({}, { id: 'd9e809d7-4e52-4117-8b98-14e207e8aef1', name: 'testtest1' }, null), {});
+    //     expect(response.statusCode).toBe(200);
+    // })
+
+    // it('put', async () => {
+    //     const response = await handler.put(handlerHelper.createEvent({}, { name: 'testtest' }, null), {});
+    //     expect(response.statusCode).not.toBe(200);
+    // })
+
+    // it('put', async () => {
+    //     const response = await handler.put(handlerHelper.createEvent({}, { id:'xxx', name: 'testtest23' }, null), {});
+    //     expect(response.statusCode).not.toBe(200);
+    // })
+    it('delete', async () => {
+        const response = await handler.delete(handlerHelper.createEvent({}, { id:'bb3c2a58-b5e6-4fb4-a22a-9c5e2c5ad32a'}, null), {});
+        console.log(response);
         expect(response.statusCode).toBe(200);
-    })
-
-    it('put', async () => {
-        const response = await handler.put(handlerHelper.createEvent({}, { name: 'testtest' }, null), {});
-        expect(response.statusCode).not.toBe(200);
-    })
-
-    it('put', async () => {
-        const response = await handler.put(handlerHelper.createEvent({}, { id:'xxx', name: 'testtest23' }, null), {});
-        expect(response.statusCode).not.toBe(200);
     })
 })
