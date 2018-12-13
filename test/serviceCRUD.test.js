@@ -34,12 +34,12 @@ describe('CRUD', () => {
     })
 
     it('put', async () => {
-        const response = await handler.put(handlerHelper.createEvent({}, { id: 'bb3c2a58-b5e6-4fb4-a22a-9c5e2c5ad32a'}, null), {});
-        expect(response.statusCode).toBe(400);
+        const response = await handler.put(handlerHelper.createEvent({}, { id: 'aaa'}, null), {});
+        expect(response.statusCode).not.toBe(200);
     })
 
     it('put', async () => {
-        const response = await handler.put(handlerHelper.createEvent({}, { id: 'd9e809d7-4e52-4117-8b98-14e207e8aef1', name: 'testtest1' }, null), {});
+        const response = await handler.put(handlerHelper.createEvent({}, { id: '66a36e77-fd00-3779-8097-17841f998f4d', name: 'testtest1' }, null), {});
         expect(response.statusCode).toBe(200);
     })
 

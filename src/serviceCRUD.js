@@ -72,7 +72,7 @@ module.exports.post = async (event, context) => {
         }
 
         const id = uuidv4();
-        logger.error(id);
+        // logger.error(id);
         const params = {
             TableName: process.env.SERVICETABLENAME,
             Item: {
