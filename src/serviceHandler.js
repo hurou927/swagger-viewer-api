@@ -6,13 +6,23 @@ const log4js = require('log4js');
 const logger = log4js.getLogger();
 logger.level = 'debug';
 
-AWS.config.update({ region: 'ap-northeast-1' });
-const dynamodb = new AWS.DynamoDB.DocumentClient();
+// AWS.config.update({ region: 'ap-northeast-1' });
+
+let dynamodb;
+if (process.env.DYNAMODBLOCAL === 'true'){
+
+  dynamodb = new AWS.DynamoDB.DocumentClient({
+    endpoint: 'http://localhost:8000'
+  });
+}else{
+  dynamodb = new AWS.DynamoDB.DocumentClient();
+}
 
 const storage = new LambdaStorage();
 
 
 const scanTable = async (TableName) => {
+  
   let scanResult = await dynamodb.scan({ TableName }).promise();
   let result = scanResult.Items;
   while ('LastEvaluatedKey' in scanResult) {
@@ -20,6 +30,7 @@ const scanTable = async (TableName) => {
       TableName,
       ExclusiveStartKey: scanResult.LastEvaluatedKey
     }
+    logger.debug(params);
     scanResult = await dynamodb.scan(params).promise();
     Array.prototype.push.apply(result, scanResult.Items);
   }
@@ -34,13 +45,14 @@ module.exports.getServices = async (event, context) => {
     logger.debug(process.env.SERVICETABLENAME);
     logger.debug(process.env.LAMBDACACHE);
 
-    const params = { TableName: process.env.SERVICETABLENAME };
 
     let isCached = false;
     let serviceList;
     if (process.env.LAMBDACACHE === 'true') {
+      
       const cachedData = storage.getItem('serviceList');
       if (cachedData === undefined) {
+        
         serviceList = await scanTable(process.env.SERVICETABLENAME);
         storage.setItem('serviceList', serviceList);
       } else {

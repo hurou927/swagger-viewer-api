@@ -17,9 +17,28 @@ provider:
       VERSIONTABLENAME: ${self:custom.versionTableName}
       LAMBDACACHE : true # NOTE! true is String => 'true'
 
+plugins:
+  - serverless-dynamodb-local
+  - serverless-offline
+
 custom:
   serviceTableName: ${self:service}-${self:provider.stage}-swagger-dynamo-serviceinfo
   versionTableName: ${self:service}-${self:provider.stage}-swagger-dynamo-versioninfo
+  dynamodb:
+    start:
+      port: 8000
+      inMemory: true
+      migrate: true
+      seed: true
+    seed:
+      development:
+        sources:
+          - table: ${self:provider.environment.SERVICETABLENAME}
+            sources:
+              - ./db/serviceinfo.local.json
+          - table: ${self:provider.environment.VERSIONTABLENAME}
+            sources:
+              - ./db/versioninfo.local.json
 
 package:
   exclude:

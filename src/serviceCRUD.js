@@ -9,9 +9,17 @@ logger.level = 'debug';
 const Validator = require('jsonschema').Validator;
 const v = new Validator();
 
+let dynamodb;
+if (process.env.DYNAMODBLOCAL === 'true') {
+    dynamodb = new AWS.DynamoDB.DocumentClient({
+        endpoint: 'http://localhost:8000'
+    });
+} else {
+    dynamodb = new AWS.DynamoDB.DocumentClient();
+}
 
-AWS.config.update({ region: 'ap-northeast-1' });
-const dynamodb = new AWS.DynamoDB.DocumentClient();
+
+
 
 module.exports.get = async (event, context) => {
     try {
@@ -33,6 +41,11 @@ module.exports.get = async (event, context) => {
         } else {
             return lambdaHelper.response.error('incorrect id');
         }
+
+        // const queryParams = {
+        //     TableName: 
+        // }
+
     } catch (error) {
         logger.error(error);
         return lambdaHelper.response.error('error');
